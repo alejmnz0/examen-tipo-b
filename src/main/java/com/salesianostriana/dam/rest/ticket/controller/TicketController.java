@@ -1,5 +1,6 @@
 package com.salesianostriana.dam.rest.ticket.controller;
 
+import com.salesianostriana.dam.rest.exeptions.NotFoundExeption;
 import com.salesianostriana.dam.rest.ticket.GetTicketDto;
 import com.salesianostriana.dam.rest.ticket.model.Ticket;
 import com.salesianostriana.dam.rest.ticket.repo.TicketRepository;
@@ -24,7 +25,7 @@ public class TicketController {
     public ResponseEntity<List<Ticket>> getAll() {
         List<Ticket> result = ticketRepository.findAll();
         if (result.isEmpty()) {
-            // Completar
+            throw new NotFoundExeption ("Tiket no encontrado");
         }
         return ResponseEntity.ok(result);
 
@@ -35,7 +36,7 @@ public class TicketController {
     public ResponseEntity<Ticket> getById(@PathVariable Long id) {
         Optional<Ticket> result = ticketRepository.findById(id);
         if (result.isEmpty()) {
-            // Completar
+            throw new NotFoundExeption ("Tiket no encontrado");
         }
         return ResponseEntity.ok(result.get());
 
@@ -43,7 +44,7 @@ public class TicketController {
 
     @GetMapping("/dto")
     public ResponseEntity<List<GetTicketDto>> getAllDto() {
-        return null; // Modificar
+        return ResponseEntity.status(200).body(ticketRepository.findAll().stream().map(GetTicketDto::of).toList());
     }
 
 

@@ -1,6 +1,7 @@
 package com.salesianostriana.dam.rest.security;
 
 import com.salesianostriana.dam.rest.security.jwt.access.JwtAuthenticationFilter;
+import com.salesianostriana.dam.rest.user.model.UserRole;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -82,7 +83,9 @@ public class SecurityConfig {
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS))
 
                         .authorizeHttpRequests((authz) -> authz
-                                .anyRequest().permitAll());
+                                .requestMatchers(antMatcher("/auth/register/admin")).hasRole("ADMIN")
+                                .requestMatchers(antMatcher("/ticket")).hasRole("USER")
+                                .anyRequest().authenticated());
 
 
 
